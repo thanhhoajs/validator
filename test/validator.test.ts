@@ -473,3 +473,141 @@ describe('Validator using .field() method', () => {
     );
   });
 });
+
+describe('Additional Validator Methods', () => {
+  describe('lowercase validation', () => {
+    const lowercaseValidator = createValidator();
+    lowercaseValidator.field('field').lowercase('Field must be lowercase');
+
+    test('valid lowercase field', () => {
+      const validData = { field: 'lowercase' };
+      expect(lowercaseValidator.validate(validData)).toHaveLength(0);
+    });
+
+    test('invalid lowercase field', () => {
+      const invalidData = { field: 'NotLowercase' };
+      const errors = lowercaseValidator.validate(invalidData);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].errors).toContain('Field must be lowercase');
+    });
+  });
+
+  describe('uppercase validation', () => {
+    const uppercaseValidator = createValidator();
+    uppercaseValidator.field('field').uppercase('Field must be uppercase');
+
+    test('valid uppercase field', () => {
+      const validData = { field: 'UPPERCASE' };
+      expect(uppercaseValidator.validate(validData)).toHaveLength(0);
+    });
+
+    test('invalid uppercase field', () => {
+      const invalidData = { field: 'NotUppercase' };
+      const errors = uppercaseValidator.validate(invalidData);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].errors).toContain('Field must be uppercase');
+    });
+  });
+
+  describe('alphanumeric validation', () => {
+    const alphanumericValidator = createValidator();
+    alphanumericValidator
+      .field('field')
+      .alphanumeric('Field must be alphanumeric');
+
+    test('valid alphanumeric field', () => {
+      const validData = { field: 'abc123' };
+      expect(alphanumericValidator.validate(validData)).toHaveLength(0);
+    });
+
+    test('invalid alphanumeric field', () => {
+      const invalidData = { field: 'abc-123' };
+      const errors = alphanumericValidator.validate(invalidData);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].errors).toContain('Field must be alphanumeric');
+    });
+  });
+
+  describe('length validation', () => {
+    const lengthValidator = createValidator();
+    lengthValidator
+      .field('field')
+      .length(5, 10, 'Field length must be between 5 and 10');
+
+    test('valid length field', () => {
+      const validData = { field: '12345' };
+      expect(lengthValidator.validate(validData)).toHaveLength(0);
+    });
+
+    test('invalid length field (too short)', () => {
+      const invalidData = { field: '1234' };
+      const errors = lengthValidator.validate(invalidData);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].errors).toContain(
+        'Field length must be between 5 and 10',
+      );
+    });
+
+    test('invalid length field (too long)', () => {
+      const invalidData = { field: '12345678901' };
+      const errors = lengthValidator.validate(invalidData);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].errors).toContain(
+        'Field length must be between 5 and 10',
+      );
+    });
+  });
+
+  describe('pattern validation', () => {
+    const patternValidator = createValidator();
+    patternValidator
+      .field('field')
+      .pattern(/^\d+$/, 'Field must match the pattern');
+
+    test('valid pattern field', () => {
+      const validData = { field: '12345' };
+      expect(patternValidator.validate(validData)).toHaveLength(0);
+    });
+
+    test('invalid pattern field', () => {
+      const invalidData = { field: 'abc123' };
+      const errors = patternValidator.validate(invalidData);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].errors).toContain('Field must match the pattern');
+    });
+  });
+
+  describe('date validation', () => {
+    const dateValidator = createValidator();
+    dateValidator.field('field').date('Field must be a valid date');
+
+    test('valid date field', () => {
+      const validData = { field: '2023-09-15' };
+      expect(dateValidator.validate(validData)).toHaveLength(0);
+    });
+
+    test('invalid date field', () => {
+      const invalidData = { field: 'invalid-date' };
+      const errors = dateValidator.validate(invalidData);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].errors).toContain('Field must be a valid date');
+    });
+  });
+
+  describe('url validation', () => {
+    const urlValidator = createValidator();
+    urlValidator.field('field').url('Field must be a valid URL');
+
+    test('valid url field', () => {
+      const validData = { field: 'https://example.com' };
+      expect(urlValidator.validate(validData)).toHaveLength(0);
+    });
+
+    test('invalid url field', () => {
+      const invalidData = { field: 'not-a-url' };
+      const errors = urlValidator.validate(invalidData);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].errors).toContain('Field must be a valid URL');
+    });
+  });
+});
