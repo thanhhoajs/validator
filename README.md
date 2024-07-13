@@ -114,8 +114,15 @@ console.log(errors); // [] (empty array if validation passes)
 - `email(message?: string)`: Validates that the field is a valid email address.
 - `min(limit: number, message?: string)`: Validates the minimum value or length.
 - `max(limit: number, message?: string)`: Validates the maximum value or length.
-- `enum(allowedValues: any[], message?: string)`: Validates that the value is one of the allowed values.
+- `enum(allowedValues: string[], message?: string)`: Validates that the value is one of the allowed values.
 - `custom(validate: (value: any) => boolean | string, message?: string)`: Adds a custom validation rule.
+- `lowercase(message?: string)`: Validates that the field is in lowercase.
+- `uppercase(message?: string)`: Validates that the field is in uppercase.
+- `alphanumeric(message?: string)`: Validates that the field contains only letters and numbers.
+- `length(min: number, max?: number, message?: string)`: Validates that the string length is within a certain range.
+- `pattern(regex: RegExp, message?: string)`: Validates that the field matches a specific regex pattern.
+- `date(message?: string)`: Validates that the field is a valid date.
+- `url(message?: string)`: Validates that the field is a valid URL.
 
 ## Advanced Usage
 
