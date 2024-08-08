@@ -13,9 +13,9 @@ export interface IValidator {
    * Validates the data based on the defined rules and returns any validation errors.
    *
    * @param {Record<string, any>} data - The data to be validated.
-   * @return {IValidationError[]} An array of validation errors, if any.
+   * @return {Promise<IValidationError[]>} A promise that resolves to an array of validation errors, if any.
    */
-  validate(data: Record<string, any>): IValidationError[];
+  validate(data: Record<string, any>): Promise<IValidationError[]>;
 
   /**
    * Configures the validations for each field using the provided `validations` object.

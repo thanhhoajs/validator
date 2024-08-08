@@ -16,6 +16,19 @@ export class FieldValidator implements IFieldValidator {
     return this;
   }
 
+  async validate(value: any): Promise<string[]> {
+    const errors: string[] = [];
+    await Promise.all(
+      this.rules.map(async (rule) => {
+        const result = await rule.validate(value);
+        if (result !== true) {
+          errors.push(typeof result === 'string' ? result : rule.message);
+        }
+      }),
+    );
+    return errors;
+  }
+
   required(message: string = 'This field is required'): FieldValidator {
     return this.addRule(
       'required',

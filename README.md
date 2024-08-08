@@ -57,7 +57,7 @@ const data = {
   age: 22,
 };
 
-const errors = validator.validate(data);
+const errors = await validator.validate(data);
 console.log(errors); // [] (empty array if validation passes)
 ```
 
@@ -93,7 +93,7 @@ const data = {
   age: 22,
 };
 
-const errors = validator.validate(data);
+const errors = await validator.validate(data);
 console.log(errors); // [] (empty array if validation passes)
 ```
 
@@ -141,26 +141,6 @@ validator
     (value) => /[A-Z]/.test(value) && /[0-9]/.test(value),
     'Password must contain at least one uppercase letter and one number',
   );
-```
-
-### Nested Fields
-
-The validator supports nested fields using dot notation:
-
-```typescript
-validator.configure({
-  'user.name': (field) => field.required('User name is required'),
-  'user.email': (field) => field.email('Invalid email'),
-});
-
-const data = {
-  user: {
-    name: 'Khanh Nguyen',
-    email: 'khanh@example.com',
-  },
-};
-
-const errors = validator.validate(data);
 ```
 
 ## Performance Considerations
