@@ -2,17 +2,12 @@ import {
   type IValidatorRule,
   type IValidationError,
   FieldValidator,
+  type IValidator,
 } from '@thanhhoajs/validator';
 
-export class Validator {
+export class Validator implements IValidator {
   private rules: Record<string, IValidatorRule[]> = {};
 
-  /**
-   * Returns a FieldValidator instance for the given field name.
-   *
-   * @param {string} name - The name of the field.
-   * @return {FieldValidator} A FieldValidator instance for the given field name.
-   */
   field(name: string): FieldValidator {
     if (!this.rules[name]) {
       this.rules[name] = [];
@@ -20,12 +15,6 @@ export class Validator {
     return new FieldValidator(this.rules[name]);
   }
 
-  /**
-   * Validates the data based on the defined rules and returns any validation errors.
-   *
-   * @param {Record<string, any>} data - The data to be validated.
-   * @return {IValidationError[]} An array of validation errors, if any.
-   */
   validate(data: Record<string, any>): IValidationError[] {
     const errors: IValidationError[] = [];
 
@@ -48,12 +37,6 @@ export class Validator {
     return errors;
   }
 
-  /**
-   * Configures the validations for each field using the provided `validations` object.
-   *
-   * @param {Record<string, (fieldValidator: FieldValidator) => void>} validations - An object containing the field names as keys and the corresponding validation functions as values.
-   * @return {void} This function does not return a value.
-   */
   configure(
     validations: Record<string, (fieldValidator: FieldValidator) => void>,
   ): void {
