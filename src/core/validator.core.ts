@@ -15,24 +15,20 @@ export class Validator implements IValidator {
     return new FieldValidator(this.rules[name]);
   }
 
-  validate(data: Record<string, any>): IValidationError[] {
+  async validate(data: Record<string, any>): Promise<IValidationError[]> {
     const errors: IValidationError[] = [];
 
-    for (const [field, rules] of Object.entries(this.rules)) {
-      const value = data[field];
-      const fieldErrors: string[] = [];
+    await Promise.all(
+      Object.entries(this.rules).map(async ([field, rules]) => {
+        const value = data[field];
+        const fieldValidator = new FieldValidator(rules);
+        const fieldErrors = await fieldValidator.validate(value);
 
-      for (const rule of rules) {
-        const result = rule.validate(value);
-        if (result !== true) {
-          fieldErrors.push(typeof result === 'string' ? result : rule.message);
+        if (fieldErrors.length > 0) {
+          errors.push({ field, errors: fieldErrors });
         }
-      }
-
-      if (fieldErrors.length > 0) {
-        errors.push({ field, errors: fieldErrors });
-      }
-    }
+      }),
+    );
 
     return errors;
   }

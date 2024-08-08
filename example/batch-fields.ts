@@ -85,7 +85,7 @@ const gardenData = {
   isPublic: true,
 };
 
-const flowerErrors = flowerValidator.validate(flowerData);
-const gardenErrors = gardenValidator.validate(gardenData);
+const flowerErrors = await flowerValidator.validate(flowerData);
+const gardenErrors = await gardenValidator.validate(gardenData);
 
 export { flowerErrors, gardenErrors };
