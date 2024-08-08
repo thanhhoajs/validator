@@ -127,6 +127,21 @@ export interface IFieldValidator {
   url(message?: string): IFieldValidator;
 
   /**
+   * Adds a trim validation rule to the field validator.
+   *
+   * @param {string} [message="This field must not have leading or trailing whitespace"] - The error message to display if the value has leading or trailing whitespace.
+   * @return {FieldValidator} The updated FieldValidator instance.
+   */
+  trim(message: string): IFieldValidator;
+
+  /**
+   * Adds a noWhitespace validation rule to the field validator.
+   * @param {string} [message="This field must not have whitespace"] - The error message to display if the value contains spaces.
+   * @return {FieldValidator} The updated FieldValidator instance.
+   */
+  noWhitespace(message: string): IFieldValidator;
+
+  /**
    * Adds a custom validation rule to the field validator.
    *
    * @param {ValidatorFunction} validate - The custom validation function.

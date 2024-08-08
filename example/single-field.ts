@@ -8,6 +8,7 @@ validator
   .string('Username must be a string')
   .alphanumeric('Username must be alphanumeric')
   .lowercase('Username must be in lowercase')
+  .noWhitespace()
   .length(5, 15, 'Username must be between 5 and 15 characters');
 
 validator
@@ -27,6 +28,7 @@ validator
   .required('Password is required')
   .string('Password must be a string')
   .min(8, 'Password must be at least 8 characters')
+  .noWhitespace()
   .custom(
     (value) => /[A-Z]/.test(value) && /[0-9]/.test(value),
     'Password must contain at least one uppercase letter and one number',
@@ -36,7 +38,7 @@ validator.field('isAdmin').boolean('isAdmin must be a boolean');
 
 validator.field('gender').enum(['male', 'female'], 'Invalid gender');
 
-validator.field('profileUrl').url('Profile URL must be valid');
+validator.field('profileUrl').url('Profile URL must be valid').trim();
 
 validator.field('birthDate').date('Birth date must be a valid date');
 
