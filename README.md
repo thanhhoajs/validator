@@ -123,6 +123,8 @@ console.log(errors); // [] (empty array if validation passes)
 - `pattern(regex: RegExp, message?: string)`: Validates that the field matches a specific regex pattern.
 - `date(message?: string)`: Validates that the field is a valid date.
 - `url(message?: string)`: Validates that the field is a valid URL.
+- `trim(message?: string)`: Validates that the field has no leading or trailing whitespace.
+- `noWhitespace(message?: string)`: Validates that the field contains no whitespace.
 
 ## Advanced Usage
 

@@ -1,6 +1,6 @@
 {
   "name": "@thanhhoajs/validator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publishConfig": {
     "access": "public"
   },
@@ -26,9 +26,11 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  ".": {
-    "import": "./dist/index.js",
-    "types": "./dist/index.d.ts"
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "files": [
     "dist"

@@ -610,4 +610,40 @@ describe('Additional Validator Methods', () => {
       expect(errors[0].errors).toContain('Field must be a valid URL');
     });
   });
+
+  describe('trim validation', () => {
+    const trimValidator = createValidator();
+    trimValidator.field('field').trim('Field must be trimmed');
+
+    test('valid trim field', () => {
+      const validData = { field: 'abc' };
+      expect(trimValidator.validate(validData)).toHaveLength(0);
+    });
+
+    test('invalid trim field', () => {
+      const invalidData = { field: '  ' };
+      const errors = trimValidator.validate(invalidData);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].errors).toContain('Field must be trimmed');
+    });
+  });
+
+  describe('noWhitespace validation', () => {
+    const noWhitespaceValidator = createValidator();
+    noWhitespaceValidator
+      .field('field')
+      .noWhitespace('Field must not contain whitespace');
+
+    test('valid noWhitespace field', () => {
+      const validData = { field: 'abc' };
+      expect(noWhitespaceValidator.validate(validData)).toHaveLength(0);
+    });
+
+    test('invalid noWhitespace field', () => {
+      const invalidData = { field: '  ' };
+      const errors = noWhitespaceValidator.validate(invalidData);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].errors).toContain('Field must not contain whitespace');
+    });
+  });
 });

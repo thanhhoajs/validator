@@ -153,6 +153,26 @@ export class FieldValidator implements IFieldValidator {
     );
   }
 
+  trim(
+    message: string = 'This field must not have leading or trailing whitespace',
+  ): FieldValidator {
+    return this.addRule(
+      'trim',
+      message,
+      (value) => typeof value === 'string' && value.trim() === value,
+    );
+  }
+
+  noWhitespace(
+    message: string = 'This field must not contain any whitespace',
+  ): FieldValidator {
+    return this.addRule(
+      'noWhitespace',
+      message,
+      (value) => typeof value === 'string' && !/\s/.test(value),
+    );
+  }
+
   custom(
     validate: ValidatorFunction,
     message: string = 'Invalid value',
