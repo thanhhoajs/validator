@@ -10,12 +10,12 @@ export interface IValidator {
   field(name: string): FieldValidator;
 
   /**
-   * Validates the data based on the defined rules and returns any validation errors.
+   * Validates the given data against the configured validations.
    *
    * @param {Record<string, any>} data - The data to be validated.
-   * @return {Promise<IValidationError[]>} A promise that resolves to an array of validation errors, if any.
+   * @return {IValidationError[]} An array of validation errors.
    */
-  validate(data: Record<string, any>): Promise<IValidationError[]>;
+  validate(data: Record<string, any>): IValidationError[];
 
   /**
    * Configures the validations for each field using the provided `validations` object.

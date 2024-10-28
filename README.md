@@ -34,22 +34,9 @@ import { createValidator } from '@thanhhoajs/validator';
 
 const validator = createValidator();
 
-validator
-  .field('username')
-  .required('Username is required')
-  .string('Username must be a string')
-  .min(3, 'Username must be at least 3 characters long')
-  .max(20, 'Username must not exceed 20 characters');
-
-validator
-  .field('email')
-  .required('Email is required')
-  .email('Invalid email format');
-
-validator
-  .field('age')
-  .number('Age must be a number')
-  .min(18, 'Must be at least 18 years old');
+validator.field('username').required().string().min(3).max(20);
+validator.field('email').required().email();
+validator.field('age').number().min(18);
 
 const data = {
   username: 'khanhnguyen',
@@ -57,7 +44,7 @@ const data = {
   age: 22,
 };
 
-const errors = await validator.validate(data);
+const errors = validator.validate(data);
 console.log(errors); // [] (empty array if validation passes)
 ```
 
@@ -71,20 +58,9 @@ import { createValidator } from '@thanhhoajs/validator';
 const validator = createValidator();
 
 validator.configure({
-  username: (field) =>
-    field
-      .required('Username is required')
-      .string('Username must be a string')
-      .min(3, 'Username must be at least 3 characters long')
-      .max(20, 'Username must not exceed 20 characters'),
-
-  email: (field) =>
-    field.required('Email is required').email('Invalid email format'),
-
-  age: (field) =>
-    field
-      .number('Age must be a number')
-      .min(18, 'Must be at least 18 years old'),
+  username: (field) => field.required().string()min(3).max(20),
+  email: (field) => field.required().email(),
+  age: (field) =>field.number().min(18),
 });
 
 const data = {
@@ -93,7 +69,7 @@ const data = {
   age: 22,
 };
 
-const errors = await validator.validate(data);
+const errors = validator.validate(data);
 console.log(errors); // [] (empty array if validation passes)
 ```
 
@@ -142,14 +118,6 @@ validator
     'Password must contain at least one uppercase letter and one number',
   );
 ```
-
-## Performance Considerations
-
-@thanhhoajs/validator is designed to work efficiently with Bun, leveraging its high-performance capabilities. However, for optimal performance, consider the following tips:
-
-1. Define your validation rules once and reuse the validator instance.
-2. For complex objects with many fields, consider validating only the fields that have changed.
-3. Use the configuration method for defining rules when possible, as it may offer slightly better performance for large sets of rules.
 
 ## Author
 

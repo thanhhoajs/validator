@@ -34,7 +34,7 @@ describe('Validator using .configure() method', () => {
         height: 30,
         bloomSeason: 'Summer',
       };
-      expect(await flowerValidator.validate(validFlower)).toHaveLength(0);
+      expect(flowerValidator.validate(validFlower)).toHaveLength(0);
     });
 
     test('invalid flower', async () => {
@@ -46,7 +46,7 @@ describe('Validator using .configure() method', () => {
         height: 'tall',
         bloomSeason: 'AllYear',
       };
-      const errors = await flowerValidator.validate(invalidFlower);
+      const errors = flowerValidator.validate(invalidFlower);
       expect(errors).toHaveLength(6);
       expect(errors.find((e) => e.field === 'name')?.errors).toContain(
         'Name is required',
@@ -101,7 +101,7 @@ describe('Validator using .configure() method', () => {
         quantity: 50,
         description: 'A powerful laptop',
       };
-      expect(await productValidator.validate(validProduct)).toHaveLength(0);
+      expect(productValidator.validate(validProduct)).toHaveLength(0);
     });
 
     test('invalid product', async () => {
@@ -113,7 +113,7 @@ describe('Validator using .configure() method', () => {
         quantity: -5,
         description: 'A'.repeat(1001),
       };
-      const errors = await productValidator.validate(invalidProduct);
+      const errors = productValidator.validate(invalidProduct);
       expect(errors).toHaveLength(6);
       expect(errors.find((e) => e.field === 'name')?.errors).toContain(
         'Name must be a string',
@@ -160,7 +160,7 @@ describe('Validator using .configure() method', () => {
         role: 'user',
         rememberMe: true,
       };
-      expect(await authValidator.validate(validAuth)).toHaveLength(0);
+      expect(authValidator.validate(validAuth)).toHaveLength(0);
     });
 
     test('invalid auth data', async () => {
@@ -170,7 +170,7 @@ describe('Validator using .configure() method', () => {
         role: 'superuser',
         rememberMe: 'yes',
       };
-      const errors = await authValidator.validate(invalidAuth);
+      const errors = authValidator.validate(invalidAuth);
       expect(errors).toHaveLength(4);
       expect(errors.find((e) => e.field === 'email')?.errors).toContain(
         'Invalid email format',
@@ -221,7 +221,7 @@ describe('Validator using .configure() method', () => {
         url: 'https://example.com',
         age: 25,
       };
-      expect(await customValidator.validate(validData)).toHaveLength(0);
+      expect(customValidator.validate(validData)).toHaveLength(0);
     });
 
     test('invalid custom data', async () => {
@@ -231,7 +231,7 @@ describe('Validator using .configure() method', () => {
         url: 'not a url',
         age: 150,
       };
-      const errors = await customValidator.validate(invalidData);
+      const errors = customValidator.validate(invalidData);
       expect(errors).toHaveLength(4);
       expect(errors.find((e) => e.field === 'evenNumber')?.errors).toContain(
         'Must be an even number',
@@ -254,7 +254,7 @@ describe('Validator using .configure() method', () => {
       validator.configure({
         name: (field) => field.required('Name is required'),
       });
-      const errors = await validator.validate({});
+      const errors = validator.validate({});
       expect(errors).toHaveLength(1);
       expect(errors[0].field).toBe('name');
     });
@@ -264,7 +264,7 @@ describe('Validator using .configure() method', () => {
       validator.configure({
         name: (field) => field.required('Name is required'),
       });
-      const errors = await validator.validate({
+      const errors = validator.validate({
         name: 'Khanh',
         extra: 'field',
       });
@@ -277,7 +277,7 @@ describe('Validator using .configure() method', () => {
         'user.name': (field) => field.required('User name is required'),
         'user.email': (field) => field.email('Invalid email'),
       });
-      const errors = await validator.validate({
+      const errors = validator.validate({
         user: { name: 'Khanh', email: 'invalid' },
       });
       expect(errors).toHaveLength(2);
@@ -335,9 +335,9 @@ describe('Validator using .field() method', () => {
       isbn: 'invalid-isbn',
     };
 
-    expect(await bookValidator.validate(validBook)).toHaveLength(0);
+    expect(bookValidator.validate(validBook)).toHaveLength(0);
 
-    const errors = await bookValidator.validate(invalidBook);
+    const errors = bookValidator.validate(invalidBook);
     expect(errors).toHaveLength(4);
     expect(errors.find((e) => e.field === 'title')?.errors).toContain(
       'Title must not be empty',
@@ -392,9 +392,9 @@ describe('Validator using .field() method', () => {
       difficulty: 'Expert',
     };
 
-    expect(await recipeValidator.validate(validRecipe)).toHaveLength(0);
+    expect(recipeValidator.validate(validRecipe)).toHaveLength(0);
 
-    const errors = await recipeValidator.validate(invalidRecipe);
+    const errors = recipeValidator.validate(invalidRecipe);
     expect(errors).toHaveLength(4);
     expect(errors.find((e) => e.field === 'name')?.errors).toContain(
       'Recipe name must be a string',
@@ -455,9 +455,9 @@ describe('Validator using .field() method', () => {
       tags: ['valid', 123, 'invalid'],
     };
 
-    expect(await eventValidator.validate(validEvent)).toHaveLength(0);
+    expect(eventValidator.validate(validEvent)).toHaveLength(0);
 
-    const errors = await eventValidator.validate(invalidEvent);
+    const errors = eventValidator.validate(invalidEvent);
     expect(errors).toHaveLength(5);
     expect(errors.find((e) => e.field === 'eventName')?.errors).toContain(
       'Event name must be at least 3 characters long',
@@ -484,12 +484,12 @@ describe('Additional Validator Methods', () => {
 
     test('valid lowercase field', async () => {
       const validData = { field: 'lowercase' };
-      expect(await lowercaseValidator.validate(validData)).toHaveLength(0);
+      expect(lowercaseValidator.validate(validData)).toHaveLength(0);
     });
 
     test('invalid lowercase field', async () => {
       const invalidData = { field: 'NotLowercase' };
-      const errors = await lowercaseValidator.validate(invalidData);
+      const errors = lowercaseValidator.validate(invalidData);
       expect(errors).toHaveLength(1);
       expect(errors[0].errors).toContain('Field must be lowercase');
     });
@@ -501,12 +501,12 @@ describe('Additional Validator Methods', () => {
 
     test('valid uppercase field', async () => {
       const validData = { field: 'UPPERCASE' };
-      expect(await uppercaseValidator.validate(validData)).toHaveLength(0);
+      expect(uppercaseValidator.validate(validData)).toHaveLength(0);
     });
 
     test('invalid uppercase field', async () => {
       const invalidData = { field: 'NotUppercase' };
-      const errors = await uppercaseValidator.validate(invalidData);
+      const errors = uppercaseValidator.validate(invalidData);
       expect(errors).toHaveLength(1);
       expect(errors[0].errors).toContain('Field must be uppercase');
     });
@@ -520,12 +520,12 @@ describe('Additional Validator Methods', () => {
 
     test('valid alphanumeric field', async () => {
       const validData = { field: 'abc123' };
-      expect(await alphanumericValidator.validate(validData)).toHaveLength(0);
+      expect(alphanumericValidator.validate(validData)).toHaveLength(0);
     });
 
     test('invalid alphanumeric field', async () => {
       const invalidData = { field: 'abc-123' };
-      const errors = await alphanumericValidator.validate(invalidData);
+      const errors = alphanumericValidator.validate(invalidData);
       expect(errors).toHaveLength(1);
       expect(errors[0].errors).toContain('Field must be alphanumeric');
     });
@@ -539,12 +539,12 @@ describe('Additional Validator Methods', () => {
 
     test('valid length field', async () => {
       const validData = { field: '12345' };
-      expect(await lengthValidator.validate(validData)).toHaveLength(0);
+      expect(lengthValidator.validate(validData)).toHaveLength(0);
     });
 
     test('invalid length field (too short)', async () => {
       const invalidData = { field: '1234' };
-      const errors = await lengthValidator.validate(invalidData);
+      const errors = lengthValidator.validate(invalidData);
       expect(errors).toHaveLength(1);
       expect(errors[0].errors).toContain(
         'Field length must be between 5 and 10',
@@ -553,7 +553,7 @@ describe('Additional Validator Methods', () => {
 
     test('invalid length field (too long)', async () => {
       const invalidData = { field: '12345678901' };
-      const errors = await lengthValidator.validate(invalidData);
+      const errors = lengthValidator.validate(invalidData);
       expect(errors).toHaveLength(1);
       expect(errors[0].errors).toContain(
         'Field length must be between 5 and 10',
@@ -569,12 +569,12 @@ describe('Additional Validator Methods', () => {
 
     test('valid pattern field', async () => {
       const validData = { field: '12345' };
-      expect(await patternValidator.validate(validData)).toHaveLength(0);
+      expect(patternValidator.validate(validData)).toHaveLength(0);
     });
 
     test('invalid pattern field', async () => {
       const invalidData = { field: 'abc123' };
-      const errors = await patternValidator.validate(invalidData);
+      const errors = patternValidator.validate(invalidData);
       expect(errors).toHaveLength(1);
       expect(errors[0].errors).toContain('Field must match the pattern');
     });
@@ -586,12 +586,12 @@ describe('Additional Validator Methods', () => {
 
     test('valid date field', async () => {
       const validData = { field: '2023-09-15' };
-      expect(await dateValidator.validate(validData)).toHaveLength(0);
+      expect(dateValidator.validate(validData)).toHaveLength(0);
     });
 
     test('invalid date field', async () => {
       const invalidData = { field: 'invalid-date' };
-      const errors = await dateValidator.validate(invalidData);
+      const errors = dateValidator.validate(invalidData);
       expect(errors).toHaveLength(1);
       expect(errors[0].errors).toContain('Field must be a valid date');
     });
@@ -603,12 +603,12 @@ describe('Additional Validator Methods', () => {
 
     test('valid url field', async () => {
       const validData = { field: 'https://example.com' };
-      expect(await urlValidator.validate(validData)).toHaveLength(0);
+      expect(urlValidator.validate(validData)).toHaveLength(0);
     });
 
     test('invalid url field', async () => {
       const invalidData = { field: 'not-a-url' };
-      const errors = await urlValidator.validate(invalidData);
+      const errors = urlValidator.validate(invalidData);
       expect(errors).toHaveLength(1);
       expect(errors[0].errors).toContain('Field must be a valid URL');
     });
@@ -620,12 +620,12 @@ describe('Additional Validator Methods', () => {
 
     test('valid trim field', async () => {
       const validData = { field: 'abc' };
-      expect(await trimValidator.validate(validData)).toHaveLength(0);
+      expect(trimValidator.validate(validData)).toHaveLength(0);
     });
 
     test('invalid trim field', async () => {
       const invalidData = { field: '  ' };
-      const errors = await trimValidator.validate(invalidData);
+      const errors = trimValidator.validate(invalidData);
       expect(errors).toHaveLength(1);
       expect(errors[0].errors).toContain('Field must be trimmed');
     });
@@ -639,12 +639,12 @@ describe('Additional Validator Methods', () => {
 
     test('valid noWhitespace field', async () => {
       const validData = { field: 'abc' };
-      expect(await noWhitespaceValidator.validate(validData)).toHaveLength(0);
+      expect(noWhitespaceValidator.validate(validData)).toHaveLength(0);
     });
 
     test('invalid noWhitespace field', async () => {
       const invalidData = { field: '  ' };
-      const errors = await noWhitespaceValidator.validate(invalidData);
+      const errors = noWhitespaceValidator.validate(invalidData);
       expect(errors).toHaveLength(1);
       expect(errors[0].errors).toContain('Field must not contain whitespace');
     });

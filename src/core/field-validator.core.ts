@@ -16,16 +16,15 @@ export class FieldValidator implements IFieldValidator {
     return this;
   }
 
-  async validate(value: any): Promise<string[]> {
+  validate(value: any): string[] {
     const errors: string[] = [];
-    await Promise.all(
-      this.rules.map(async (rule) => {
-        const result = await rule.validate(value);
-        if (result !== true) {
-          errors.push(typeof result === 'string' ? result : rule.message);
-        }
-      }),
-    );
+    for (const rule of this.rules) {
+      const result = rule.validate(value);
+
+      if (result !== true) {
+        errors.push(typeof result === 'string' ? result : rule.message);
+      }
+    }
     return errors;
   }
 

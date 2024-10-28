@@ -61,6 +61,6 @@ const userDto = {
   promoCode: 'PROMO2024',
 };
 
-const userErrors = await validator.validate(userDto);
+const userErrors = validator.validate(userDto);
 
 export { userErrors };
