@@ -5,6 +5,8 @@ import type {
 } from '@thanhhoajs/validator';
 
 export class FieldValidator implements IFieldValidator {
+  private isOptional: boolean = false;
+
   constructor(private rules: IValidatorRule[] = []) {}
 
   private addRule(
@@ -12,15 +14,34 @@ export class FieldValidator implements IFieldValidator {
     message: string,
     validate: ValidatorFunction,
   ): FieldValidator {
-    this.rules.push({ type, message, validate });
+    const wrappedValidate: ValidatorFunction = (value: any) => {
+      // If field is optional and has no value, return true
+      if (
+        this.isOptional &&
+        (value === undefined || value === null || value === '')
+      ) {
+        return true;
+      }
+      return validate(value);
+    };
+
+    this.rules.push({ type, message, validate: wrappedValidate });
     return this;
   }
 
   validate(value: any): string[] {
     const errors: string[] = [];
+
+    // If field is optional and has no value, return true
+    if (
+      this.isOptional &&
+      (value === undefined || value === null || value === '')
+    ) {
+      return errors;
+    }
+
     for (const rule of this.rules) {
       const result = rule.validate(value);
-
       if (result !== true) {
         errors.push(typeof result === 'string' ? result : rule.message);
       }
@@ -28,7 +49,13 @@ export class FieldValidator implements IFieldValidator {
     return errors;
   }
 
+  optional(): FieldValidator {
+    this.isOptional = true;
+    return this;
+  }
+
   required(message: string = 'This field is required'): FieldValidator {
+    this.isOptional = false; // Reset isOptional when required() is called
     return this.addRule(
       'required',
       message,
